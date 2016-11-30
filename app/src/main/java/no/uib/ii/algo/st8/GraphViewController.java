@@ -212,7 +212,7 @@ public class GraphViewController {
 		view.setOnClickListener(activity);
 		view.setOnTouchListener(new View.OnTouchListener() {
 			PrivateGestureListener gl = new PrivateGestureListener();
-			GestureDetector gd = new GestureDetector(activity, gl); // TODO deprecated!
+			GestureDetector gd = new GestureDetector(activity, gl);
 
 			public boolean onTouch(View view, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -1758,7 +1758,10 @@ public class GraphViewController {
 
 						Coordinate sCoordinate = new Coordinate(e2.getX(), e2.getY());
 
-						if (view.isOnTrashCan(sCoordinate)) {	
+						Coordinate gCoordinate = translateCoordinate(sCoordinate);
+						touchedVertex.setCoordinate(gCoordinate);
+
+						if (view.isOnTrashCan(sCoordinate)) {
 							trashCan(2);
 							deleteVertex = touchedVertex;
 						} else {
@@ -1767,8 +1770,7 @@ public class GraphViewController {
 
 						}
 
-						Coordinate gCoordinate = translateCoordinate(sCoordinate);
-						touchedVertex.setCoordinate(gCoordinate);
+
 
 					} else {
 						trashCan(0);

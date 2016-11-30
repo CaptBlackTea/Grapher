@@ -202,7 +202,7 @@ public class GraphView extends View {
 		if (GraphViewController.TRASH_CAN == 1) {
 			canvas.drawBitmap(trashBitmap, trashX, trashY, trashPaint);
 		} else if (GraphViewController.TRASH_CAN == 2) {
-			canvas.drawBitmap(trashBgRedBitmap, trashX - 46, trashY - 46, trashPaint);
+			canvas.drawBitmap(trashBgRedBitmap, trashX - 100, trashY - 100, trashPaint);
 			canvas.drawBitmap(trashRedBitmap, trashX, trashY, trashPaint);
 		}
 
