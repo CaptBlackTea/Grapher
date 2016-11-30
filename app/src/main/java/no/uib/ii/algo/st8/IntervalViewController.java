@@ -5,9 +5,10 @@ import java.util.Collections;
 import no.uib.ii.algo.st8.interval.BasicGraph;
 import no.uib.ii.algo.st8.interval.Interval;
 import no.uib.ii.algo.st8.interval.IntervalGraph;
-import no.uib.ii.algo.st8.model.DefaultEdge;
+import no.uib.ii.algo.st8.model.GrapherEdge;
 import no.uib.ii.algo.st8.model.DefaultEdgeFactory;
-import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.DefaultGrapherVertexFactory;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 import no.uib.ii.algo.st8.util.Coordinate;
 import org.jgrapht.graph.SimpleGraph;
 import android.content.Context;
@@ -561,12 +562,13 @@ public class IntervalViewController {
 	/**
 	 * transforms intervalGraph to simplegraph
 	 */
-	public static SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> sg; // dangerous!
+	public static SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> sg; // dangerous!
 
 	public void toSimpleGraph() {
 		BasicGraph bg = graph.getGraph();
-		SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> sg = bg
-				.getSimpleGraph(new DefaultEdgeFactory<DefaultVertex>());
+		SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> sg = bg
+				.getSimpleGraph(new DefaultGrapherVertexFactory(), new
+						DefaultEdgeFactory<GrapherVertex>());
 		this.sg = sg;
 	}
 

@@ -2,8 +2,8 @@ package no.uib.ii.algo.st8;
 
 import no.uib.ii.algo.st8.algorithms.Algorithm;
 import no.uib.ii.algo.st8.algorithms.ProgressListener;
-import no.uib.ii.algo.st8.model.DefaultEdge;
-import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherEdge;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -21,7 +21,7 @@ import android.os.AsyncTask;
 public abstract class AlgoWrapper<Result> extends AsyncTask<Void, Integer, Result> implements ProgressListener {
 	protected final Workspace activity;
 	protected final ProgressDialog pDialog;
-	protected final Algorithm<DefaultVertex, DefaultEdge<DefaultVertex>, Result> algorithm;
+	protected final Algorithm<GrapherVertex, GrapherEdge<GrapherVertex>, Result> algorithm;
 
 	/**
 	 * Sets a new title for the progress dialog
@@ -126,7 +126,7 @@ public abstract class AlgoWrapper<Result> extends AsyncTask<Void, Integer, Resul
 	 * @param algorithm
 	 *            the algorithm this object is wrapping
 	 */
-	public AlgoWrapper(Workspace activity, Algorithm<DefaultVertex, DefaultEdge<DefaultVertex>, Result> algorithm) {
+	public AlgoWrapper(Workspace activity, Algorithm<GrapherVertex, GrapherEdge<GrapherVertex>, Result> algorithm) {
 		this.activity = activity;
 		this.algorithm = algorithm;
 		this.pDialog = new ProgressDialog(activity);
@@ -146,7 +146,7 @@ public abstract class AlgoWrapper<Result> extends AsyncTask<Void, Integer, Resul
 	 * @param progressTitle
 	 *            the title text of the progress dialog
 	 */
-	public AlgoWrapper(Workspace activity, Algorithm<DefaultVertex, DefaultEdge<DefaultVertex>, Result> algorithm,
+	public AlgoWrapper(Workspace activity, Algorithm<GrapherVertex, GrapherEdge<GrapherVertex>, Result> algorithm,
 			String progressTitle) {
 		this(activity, algorithm);
 		pDialog.setTitle(progressTitle);

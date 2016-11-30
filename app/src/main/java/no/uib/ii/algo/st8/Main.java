@@ -1,6 +1,7 @@
 package no.uib.ii.algo.st8;
 
 import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

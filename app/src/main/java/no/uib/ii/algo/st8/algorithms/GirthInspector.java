@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import no.uib.ii.algo.st8.model.DefaultEdge;
+import no.uib.ii.algo.st8.model.GrapherEdge;
 import no.uib.ii.algo.st8.util.Neighbors;
 
 import org.jgrapht.EdgeFactory;
@@ -33,7 +34,8 @@ public class GirthInspector {
 	 */
 	public static <V, E> int girth(SimpleGraph<V, E> graph) {
 		int girth = graph.vertexSet().size() + 1;
-		SimpleGraph<PathVertex<V>, DefaultEdge<PathVertex<V>>> copy = new SimpleGraph<PathVertex<V>, DefaultEdge<PathVertex<V>>>(
+		SimpleGraph<PathVertex<V>, DefaultEdge<PathVertex<V>>> copy = new
+				SimpleGraph<PathVertex<V>, DefaultEdge<PathVertex<V>>>(
 				new EdgeFactory<PathVertex<V>, DefaultEdge<PathVertex<V>>>() {
 					public DefaultEdge<PathVertex<V>> createEdge(
 							PathVertex<V> source, PathVertex<V> target) {

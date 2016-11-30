@@ -2,47 +2,52 @@ package no.uib.ii.algo.st8.algorithms;
 
 import java.util.HashMap;
 
-import no.uib.ii.algo.st8.model.DefaultEdge;
-import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherEdge;
+import no.uib.ii.algo.st8.model.GrapherVertex;
+import no.uib.ii.algo.st8.model.GrapherVertexFactory;
 import no.uib.ii.algo.st8.util.Coordinate;
 import no.uib.ii.algo.st8.util.Neighbors;
 
 import org.jgrapht.graph.SimpleGraph;
 
 public class LineGraphInspector extends
-		Algorithm<DefaultVertex, DefaultEdge<DefaultVertex>, SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>>> {
+		Algorithm<GrapherVertex, GrapherEdge<GrapherVertex>, SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>>> {
 
-	public LineGraphInspector(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+	private final GrapherVertexFactory vertexFactory;
+
+	public LineGraphInspector(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph,
+	                          GrapherVertexFactory vertexFactory) {
 		super(graph);
+		this.vertexFactory = vertexFactory;
 	}
 
 	@Override
-	public SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> execute() {
+	public SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> execute() {
 		if (graphSize() == 0 || graphEdgeSize() == 0)
-			return new SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>>(graph.getEdgeFactory());
+			return new SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>>(graph.getEdgeFactory());
 
 		return constructLineGraph();
 	}
 
-	private SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> constructLineGraph() {
+	private SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> constructLineGraph() {
 
-		SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> lg = new SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>>(
+		SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> lg = new SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>>(
 				graph.getEdgeFactory());
 
-		HashMap<DefaultVertex, DefaultEdge<DefaultVertex>> map = new HashMap<DefaultVertex, DefaultEdge<DefaultVertex>>();
+		HashMap<GrapherVertex, GrapherEdge<GrapherVertex>> map = new HashMap<GrapherVertex, GrapherEdge<GrapherVertex>>();
 
-		for (DefaultEdge<DefaultVertex> e : graph.edgeSet()) {
-			DefaultVertex v = getMidPoint(e.getSource(), e.getTarget());
+		for (GrapherEdge<GrapherVertex> e : graph.edgeSet()) {
+			GrapherVertex v = getMidPoint(e.getSource(), e.getTarget());
 			lg.addVertex(v);
 			map.put(v, e);
 		}
 
-		for (DefaultVertex v1 : lg.vertexSet()) {
-			for (DefaultVertex v2 : lg.vertexSet()) {
+		for (GrapherVertex v1 : lg.vertexSet()) {
+			for (GrapherVertex v2 : lg.vertexSet()) {
 				if (v1 == v2 || lg.containsEdge(v1, v2))
 					continue;
-				DefaultEdge<DefaultVertex> e1 = map.get(v1);
-				DefaultEdge<DefaultVertex> e2 = map.get(v2);
+				GrapherEdge<GrapherVertex> e1 = map.get(v1);
+				GrapherEdge<GrapherVertex> e2 = map.get(v2);
 
 				if (Neighbors.isIncidentEdge(graph, e1, e2))
 					lg.addEdge(v1, v2);
@@ -52,8 +57,8 @@ public class LineGraphInspector extends
 		return lg;
 	}
 
-	private DefaultVertex getMidPoint(DefaultVertex v1, DefaultVertex v2) {
-		return new DefaultVertex(getMidpoint(v1.getCoordinate(), v2.getCoordinate()));
+	private GrapherVertex getMidPoint(GrapherVertex v1, GrapherVertex v2) {
+		return vertexFactory.createVertex(getMidpoint(v1.getCoordinate(), v2.getCoordinate()));
 	}
 
 	private Coordinate getMidpoint(Coordinate c1, Coordinate c2) {

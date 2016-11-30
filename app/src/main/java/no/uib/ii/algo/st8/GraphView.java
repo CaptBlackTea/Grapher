@@ -1,7 +1,7 @@
 package no.uib.ii.algo.st8;
 
-import no.uib.ii.algo.st8.model.DefaultEdge;
-import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherEdge;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 import no.uib.ii.algo.st8.model.EdgeStyle;
 import no.uib.ii.algo.st8.util.Coordinate;
 
@@ -21,7 +21,7 @@ import android.view.View;
 
 public class GraphView extends View {
 
-	private SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph;
+	private SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph;
 	private String info = "";
 	private Matrix transformMatrix = new Matrix();
 
@@ -58,7 +58,7 @@ public class GraphView extends View {
 		return transformMatrix;
 	}
 
-	public void redraw(String info, SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+	public void redraw(String info, SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
 		this.info = info;
 		this.graph = graph;
 		invalidate();
@@ -104,9 +104,9 @@ public class GraphView extends View {
 		edgePaint.setStrokeWidth(2);
 		edgePaint.setStyle(Paint.Style.STROKE);
 
-		for (DefaultEdge<DefaultVertex> e : graph.edgeSet()) {
-			DefaultVertex v1 = e.getSource();
-			DefaultVertex v2 = e.getTarget();
+		for (GrapherEdge<GrapherVertex> e : graph.edgeSet()) {
+			GrapherVertex v1 = e.getSource();
+			GrapherVertex v2 = e.getTarget();
 
 			Coordinate c1 = v1.getCoordinate();
 			Coordinate c2 = v2.getCoordinate();
@@ -146,7 +146,7 @@ public class GraphView extends View {
 		shadowPaint.setColor(Color.DKGRAY);
 		shadowPaint.setAlpha(100); // transparent
 
-		for (DefaultVertex v : graph.vertexSet()) {
+		for (GrapherVertex v : graph.vertexSet()) {
 			Coordinate c = v.getCoordinate();
 
 			float x = c.getX(), y = c.getY();

@@ -6,8 +6,8 @@ import java.util.Collections;
 import no.uib.ii.algo.st8.algorithms.GraphInformation;
 import no.uib.ii.algo.st8.interval.Interval;
 import no.uib.ii.algo.st8.interval.IntervalGraph;
-import no.uib.ii.algo.st8.model.DefaultEdge;
-import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherEdge;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 
 import org.jgrapht.graph.SimpleGraph;
 
@@ -20,7 +20,7 @@ public class GraphExporter {
   // int green = Color.green(c.getColor());
   // int blue = Color.blue(c.getColor());
 
-  public static String getMetapost(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+  public static String getMetapost(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
     String res = "";
 
     res += "%Metapostified\n\n";
@@ -35,11 +35,11 @@ public class GraphExporter {
     res += "    draw (skalering*inn) -- (skalering*ut);\n";
     res += "enddef;\n\n";
 
-    for (DefaultVertex v : graph.vertexSet()) {
+    for (GrapherVertex v : graph.vertexSet()) {
       res += "n" + v.getId() + " = (" + v.getCoordinate().getX() + "," + v.getCoordinate().getY() + ");\n";
     }
     res += "\n";
-    for (DefaultEdge<DefaultVertex> e : graph.edgeSet()) {
+    for (GrapherEdge<GrapherVertex> e : graph.edgeSet()) {
       res += "drawedge(n" + e.getSource().getId() + ", n" + e.getTarget().getId() + ");\n";
     }
 
@@ -70,7 +70,7 @@ public class GraphExporter {
     return res;
   }
 
-  private static String getEndFigure(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+  private static String getEndFigure(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
     String info = GraphInformation.graphInfo(graph);
     String infop = info.replaceAll(" ", "-").replaceAll(",", "-").replaceAll("\\.", "-").toLowerCase();
     infop = infop.replace("----", "-");
@@ -128,11 +128,11 @@ public class GraphExporter {
     return res;
   }
 
-  public static String getTikz(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph, Matrix transformation) {
+  public static String getTikz(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph, Matrix transformation) {
     String res = "\n\t\\begin{tikzpicture}";
     res += "[every node/.style={circle, draw, scale=.6}, scale=1.0, rotate = 180, xscale = -1]\n\n";
 
-    for (DefaultVertex v : graph.vertexSet()) {
+    for (GrapherVertex v : graph.vertexSet()) {
       float[] points = { v.getCoordinate().getX(), v.getCoordinate().getY() };
       transformation.mapPoints(points);
 
@@ -144,7 +144,7 @@ public class GraphExporter {
       res += " {};\n";
     }
     res += "\n";
-    for (DefaultEdge<DefaultVertex> e : graph.edgeSet()) {
+    for (GrapherEdge<GrapherVertex> e : graph.edgeSet()) {
       res += "\t\t\\draw (" + e.getSource().getId() + ") -- (" + e.getTarget().getId() + ");\n";
     }
     res += "\n";

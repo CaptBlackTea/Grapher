@@ -3,19 +3,19 @@ package no.uib.ii.algo.st8;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import no.uib.ii.algo.st8.model.DefaultEdge;
-import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherEdge;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 import no.uib.ii.algo.st8.util.Neighbors;
 
 import org.jgrapht.graph.SimpleGraph;
 
 public class Undo {
-  private SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph;
+  private SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph;
   private final Stack<History> history = new Stack<History>();
 
   private volatile boolean hasChanged = true;
 
-  public Undo(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+  public Undo(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
     this.graph = graph;
   }
 
@@ -25,7 +25,7 @@ public class Undo {
     return x;
   }
 
-  public void clear(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+  public void clear(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
 
     System.out.println("Clearing memory ... ");
 
@@ -49,7 +49,7 @@ public class Undo {
       if (!h.add) {
         graph.addVertex(h.vertex);
         System.out.println("\tadding vertex " + h.vertex.getId());
-        for (DefaultVertex v : h.neighbors) {
+        for (GrapherVertex v : h.neighbors) {
           graph.addEdge(h.vertex, v);
           System.out.println("\t\tadding edge" + h.vertex.getId() + " - " + v.getId());
         }
@@ -70,48 +70,48 @@ public class Undo {
     return true;
   }
 
-  public boolean addVertex(DefaultVertex v) {
+  public boolean addVertex(GrapherVertex v) {
     addHistory(v, true);
     return graph.addVertex(v);
   }
 
-  public boolean removeVertex(DefaultVertex v) {
+  public boolean removeVertex(GrapherVertex v) {
     addHistory(v, false);
     return graph.removeVertex(v);
   }
 
-  public DefaultEdge<DefaultVertex> addEdge(DefaultVertex v, DefaultVertex u) {
+  public GrapherEdge<GrapherVertex> addEdge(GrapherVertex v, GrapherVertex u) {
     addHistory(v, u, true);
     return graph.addEdge(v, u);
   }
 
-  public DefaultEdge<DefaultVertex> addEdge(DefaultEdge<DefaultVertex> e) {
+  public GrapherEdge<GrapherVertex> addEdge(GrapherEdge<GrapherVertex> e) {
     return addEdge(e.getSource(), e.getTarget());
   }
 
-  public DefaultEdge<DefaultVertex> removeEdge(DefaultVertex v, DefaultVertex u) {
+  public GrapherEdge<GrapherVertex> removeEdge(GrapherVertex v, GrapherVertex u) {
     addHistory(v, u, false);
     return graph.removeEdge(v, u);
   }
 
-  private void addHistory(DefaultVertex v, DefaultVertex u, boolean add) {
+  private void addHistory(GrapherVertex v, GrapherVertex u, boolean add) {
     hasChanged = true;
     history.push(new History(v, u, add));
   }
 
-  private void addHistory(DefaultVertex v, boolean add) {
+  private void addHistory(GrapherVertex v, boolean add) {
     hasChanged = true;
     history.push(new History(v, add));
   }
 
   private class History {
     boolean isVertex;
-    DefaultVertex vertex;
-    DefaultVertex otherVertex;
-    ArrayList<DefaultVertex> neighbors = new ArrayList<DefaultVertex>();
+    GrapherVertex vertex;
+    GrapherVertex otherVertex;
+    ArrayList<GrapherVertex> neighbors = new ArrayList<GrapherVertex>();
     boolean add;
 
-    public History(DefaultVertex v, boolean add) {
+    public History(GrapherVertex v, boolean add) {
       isVertex = true;
       this.add = add;
       this.vertex = v;
@@ -119,7 +119,7 @@ public class Undo {
         neighbors.addAll(Neighbors.openNeighborhood(graph, v));
     }
 
-    public History(DefaultVertex v, DefaultVertex u, boolean add) {
+    public History(GrapherVertex v, GrapherVertex u, boolean add) {
       isVertex = false;
       this.add = add;
       this.vertex = v;

@@ -6,9 +6,10 @@ import java.util.Map;
 import java.util.Set;
 
 import no.uib.ii.algo.st8.model.DefaultEdge;
+import no.uib.ii.algo.st8.model.GrapherEdge;
 import no.uib.ii.algo.st8.model.DefaultEdgeFactory;
-import no.uib.ii.algo.st8.model.DefaultVertex;
-import no.uib.ii.algo.st8.settings.Geometric;
+import no.uib.ii.algo.st8.model.GrapherVertex;
+import no.uib.ii.algo.st8.model.Geometric;
 import no.uib.ii.algo.st8.util.Coordinate;
 
 import org.jgrapht.alg.ConnectivityInspector;
@@ -31,15 +32,15 @@ public class SpringLayout {
 	 */
 	public static final float MAX_MOVEMENT = 50; // or 100?
 
-	private final SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph;
+	private final SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph;
 	private SimpleGraph<SpringVertex, DefaultEdge<SpringVertex>> layout;
 
-	private Map<DefaultVertex, Integer> vertexToComponent;
+	private Map<GrapherVertex, Integer> vertexToComponent;
 
 	public SpringLayout(
-			SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+			SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
 		this.graph = graph;
-		vertexToComponent = new HashMap<DefaultVertex, Integer>();
+		vertexToComponent = new HashMap<GrapherVertex, Integer>();
 		initialize();
 	}
 
@@ -125,17 +126,17 @@ public class SpringLayout {
 		vertexToComponent.clear();
 
 		// computes which connected components the different vertices belong to.
-		ConnectivityInspector<DefaultVertex, DefaultEdge<DefaultVertex>> ci = new ConnectivityInspector<DefaultVertex, DefaultEdge<DefaultVertex>>(
+		ConnectivityInspector<GrapherVertex, GrapherEdge<GrapherVertex>> ci = new ConnectivityInspector<GrapherVertex, GrapherEdge<GrapherVertex>>(
 				graph);
-		List<Set<DefaultVertex>> ccs = ci.connectedSets();
+		List<Set<GrapherVertex>> ccs = ci.connectedSets();
 		for (int i = 0; i < ccs.size(); i++) {
-			for (DefaultVertex v : ccs.get(i)) {
+			for (GrapherVertex v : ccs.get(i)) {
 				vertexToComponent.put(v, i + 1);
 			}
 		}
 
 		layout = new SimpleGraph<SpringVertex, DefaultEdge<SpringVertex>>(
-				new DefaultEdgeFactory<SpringVertex>());
+				new DefaultEdgeFactory());
 
 		for (Geometric v : graph.vertexSet()) {
 			SpringVertex sp = new SpringVertex(v, vertexToComponent.get(v));
@@ -144,7 +145,7 @@ public class SpringLayout {
 			fromLayoutToGraph.put(sp, v);
 		}
 
-		for (DefaultEdge<DefaultVertex> e : graph.edgeSet()) {
+		for (GrapherEdge<GrapherVertex> e : graph.edgeSet()) {
 			Geometric source = e.getSource();
 			Geometric target = e.getTarget();
 

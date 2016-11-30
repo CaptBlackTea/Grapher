@@ -2,14 +2,10 @@ package no.uib.ii.algo.st8.model;
 
 import java.io.Serializable;
 
-import no.uib.ii.algo.st8.settings.Colorful;
-import no.uib.ii.algo.st8.settings.Geometric;
-import no.uib.ii.algo.st8.settings.Labelled;
-import no.uib.ii.algo.st8.settings.Sized;
 import no.uib.ii.algo.st8.util.Coordinate;
 import android.graphics.Color;
 
-public class DefaultVertex implements Colorful, Geometric, Labelled, Sized, Serializable {
+public class DefaultVertex implements GrapherVertex {
 	private static final long serialVersionUID = 1L;
 
 	/** The counter for id's for DefaultVertices made */

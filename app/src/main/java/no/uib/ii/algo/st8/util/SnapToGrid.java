@@ -1,7 +1,7 @@
 package no.uib.ii.algo.st8.util;
 
-import no.uib.ii.algo.st8.model.DefaultEdge;
-import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherEdge;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 
 import org.jgrapht.graph.SimpleGraph;
 
@@ -9,17 +9,17 @@ public class SnapToGrid {
 
   private static float SQRT3 = (float) Math.sqrt(3);
 
-  private final SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph;
+  private final SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph;
 
   // TODO should we treat stuff component-wise?
-  // private Map<DefaultVertex, Integer> vertexToComponent;
+  // private Map<GrapherVertex, Integer> vertexToComponent;
 
-  public SnapToGrid(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+  public SnapToGrid(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
     this.graph = graph;
-    // vertexToComponent = new HashMap<DefaultVertex, Integer>();
+    // vertexToComponent = new HashMap<GrapherVertex, Integer>();
   }
 
-  private DefaultVertex arbitrary() {
+  private GrapherVertex arbitrary() {
     if (graph.vertexSet().isEmpty())
       return null;
     return graph.vertexSet().iterator().next();
@@ -30,7 +30,7 @@ public class SnapToGrid {
     if (n == 0)
       return;
 
-    DefaultVertex arb = arbitrary();
+    GrapherVertex arb = arbitrary();
 
     Coordinate cArb = arb.getCoordinate();
     float size = arb.getSize();
@@ -40,7 +40,7 @@ public class SnapToGrid {
     float yMin = cArb.getY();
     float yMax = cArb.getY();
 
-    for (DefaultVertex v : graph.vertexSet()) {
+    for (GrapherVertex v : graph.vertexSet()) {
       xMin = Math.min(xMin, v.getCoordinate().getX());
       xMax = Math.max(xMax, v.getCoordinate().getX());
 
@@ -51,7 +51,7 @@ public class SnapToGrid {
     float xDiff = xMax - xMin;
     float yDiff = yMax - yMin;
 
-    for (DefaultVertex v : graph.vertexSet()) {
+    for (GrapherVertex v : graph.vertexSet()) {
       Coordinate c = v.getCoordinate();
 
       float cx = c.getX() - xMin;

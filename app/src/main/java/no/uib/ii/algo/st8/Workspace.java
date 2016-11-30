@@ -13,8 +13,9 @@ import java.util.List;
 import no.uib.ii.algo.st8.algorithms.GraphInformation;
 import no.uib.ii.algo.st8.interval.IntervalGraph;
 import no.uib.ii.algo.st8.interval.SimpleToBasicWrapper;
-import no.uib.ii.algo.st8.model.DefaultEdge;
+import no.uib.ii.algo.st8.model.GrapherEdge;
 import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 import no.uib.ii.algo.st8.util.FileAccess;
 import no.uib.ii.algo.st8.util.GraphExporter;
 
@@ -23,7 +24,6 @@ import org.json.JSONException;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -206,7 +206,7 @@ public class Workspace extends Activity implements OnClickListener, SensorEventL
 	private boolean shareInterval() {
 		String shareBody = "\\documentclass{article}\n\\usepackage{tikz}\n\\begin{document}\n\n";
 
-		SimpleToBasicWrapper<DefaultVertex, DefaultEdge<DefaultVertex>> wrap = new SimpleToBasicWrapper<DefaultVertex, DefaultEdge<DefaultVertex>>(
+		SimpleToBasicWrapper<GrapherVertex, GrapherEdge<GrapherVertex>> wrap = new SimpleToBasicWrapper<GrapherVertex, GrapherEdge<GrapherVertex>>(
 				controller.getGraph());
 
 		IntervalGraph ig = wrap.getIntervalGraph();
@@ -869,7 +869,7 @@ public class Workspace extends Activity implements OnClickListener, SensorEventL
 					String json = stringBuffer.toString();
 					System.out.println(json);
 
-					new FileAccess().load(controller.getGraph(), json);
+					new FileAccess().load(controller, json);
 					
 					controller.clearMemory();
 					

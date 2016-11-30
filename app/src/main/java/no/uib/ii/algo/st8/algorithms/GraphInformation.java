@@ -2,15 +2,15 @@ package no.uib.ii.algo.st8.algorithms;
 
 import no.uib.ii.algo.st8.algorithms.RegularityInspector.StronglyRegularWitness;
 import no.uib.ii.algo.st8.interval.SimpleToBasicWrapper;
-import no.uib.ii.algo.st8.model.DefaultEdge;
-import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherEdge;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 
 import org.jgrapht.alg.ConnectivityInspector;
 import org.jgrapht.graph.SimpleGraph;
 
 public class GraphInformation {
 
-  public static String graphInfo(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+  public static String graphInfo(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
 
     int vertexCount = graph.vertexSet().size();
     if (vertexCount == 0) {
@@ -25,7 +25,7 @@ public class GraphInformation {
       }
     }
 
-    ConnectivityInspector<DefaultVertex, DefaultEdge<DefaultVertex>> inspector = new ConnectivityInspector<DefaultVertex, DefaultEdge<DefaultVertex>>(
+    ConnectivityInspector<GrapherVertex, GrapherEdge<GrapherVertex>> inspector = new ConnectivityInspector<GrapherVertex, GrapherEdge<GrapherVertex>>(
         graph);
 
     boolean isConnected = inspector.isGraphConnected();
@@ -37,7 +37,7 @@ public class GraphInformation {
     boolean acyclic = GirthInspector.isAcyclic(graph);
     boolean isChordal = SimplicialInspector.isChordal(graph);
 
-    boolean isInterval = (new SimpleToBasicWrapper<DefaultVertex, DefaultEdge<DefaultVertex>>(graph)).getIntervalGraph() != null;
+    boolean isInterval = (new SimpleToBasicWrapper<GrapherVertex, GrapherEdge<GrapherVertex>>(graph)).getIntervalGraph() != null;
 
     int maxDegree = maxDegree(graph);
     int minDegree = minDegree(graph);
@@ -66,7 +66,7 @@ public class GraphInformation {
           else
             s += " union of cycles,";
         }
-        StronglyRegularWitness srw = new RegularityInspector<DefaultVertex, DefaultEdge<DefaultVertex>>(graph).isStronglyRegular();
+        StronglyRegularWitness srw = new RegularityInspector<GrapherVertex, GrapherEdge<GrapherVertex>>(graph).isStronglyRegular();
         if (srw != null) {
           // graph is strongly regular!
           s += " " + srw;
@@ -80,23 +80,23 @@ public class GraphInformation {
     return s;
   }
 
-  public static int maxDegree(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+  public static int maxDegree(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
     // TODO What to do on empty graphs?
 
     int d = 0;
 
-    for (DefaultVertex v : graph.vertexSet()) {
+    for (GrapherVertex v : graph.vertexSet()) {
       d = Math.max(d, graph.degreeOf(v));
     }
 
     return d;
   }
 
-  public static int minDegree(SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph) {
+  public static int minDegree(SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph) {
     // TODO What to do on empty graphs?
     int d = graph.vertexSet().size();
 
-    for (DefaultVertex v : graph.vertexSet()) {
+    for (GrapherVertex v : graph.vertexSet()) {
       d = Math.min(d, graph.degreeOf(v));
     }
 

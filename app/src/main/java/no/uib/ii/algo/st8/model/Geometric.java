@@ -1,4 +1,4 @@
-package no.uib.ii.algo.st8.settings;
+package no.uib.ii.algo.st8.model;
 
 import no.uib.ii.algo.st8.util.Coordinate;
 

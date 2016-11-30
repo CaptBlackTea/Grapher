@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Queue;
 
-import no.uib.ii.algo.st8.model.DefaultEdge;
-import no.uib.ii.algo.st8.model.DefaultVertex;
+import no.uib.ii.algo.st8.model.GrapherEdge;
+import no.uib.ii.algo.st8.model.GrapherVertex;
+import no.uib.ii.algo.st8.model.GrapherVertexFactory;
 import no.uib.ii.algo.st8.util.Coordinate;
 
 import org.jgrapht.EdgeFactory;
@@ -569,16 +570,17 @@ public class BasicGraph {
     }
   }
 
-  public SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> getSimpleGraph(
-      EdgeFactory<DefaultVertex, DefaultEdge<DefaultVertex>> edgeFactory) {
+  public SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> getSimpleGraph
+          (GrapherVertexFactory vertexFactory,
+      EdgeFactory<GrapherVertex, GrapherEdge<GrapherVertex>> edgeFactory) {
     int n = vertices.size();
-    SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> sg = new SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>>(
+    SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> sg = new SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>>(
         edgeFactory);
-    HashMap<Integer, DefaultVertex> map = new HashMap<Integer, DefaultVertex>();
+    HashMap<Integer, GrapherVertex> map = new HashMap<Integer, GrapherVertex>();
     for (Integer i : vertices) {
       int x = i % ((int) Math.sqrt(n) + 1);
       int y = i - x;
-      DefaultVertex vi = new DefaultVertex(new Coordinate(x, y));
+      GrapherVertex vi = vertexFactory.createVertex(new Coordinate(x, y));
       sg.addVertex(vi);
       map.put(i, vi);
     }

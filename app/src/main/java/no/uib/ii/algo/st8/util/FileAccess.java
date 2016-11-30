@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import no.uib.ii.algo.st8.model.DefaultEdge;
-import no.uib.ii.algo.st8.model.DefaultVertex;
-import no.uib.ii.algo.st8.util.Coordinate;
+import no.uib.ii.algo.st8.GraphViewController;
+import no.uib.ii.algo.st8.model.GrapherEdge;
+import no.uib.ii.algo.st8.model.GrapherVertex;
 
 import org.jgrapht.graph.SimpleGraph;
 import org.json.JSONArray;
@@ -16,7 +16,7 @@ import org.json.JSONObject;
 public class FileAccess {
 
 	public String save(
-			SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph)
+			SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph)
 			throws JSONException {
 		JSONObject json = new JSONObject();
 		JSONObject vertices = new JSONObject();
@@ -27,7 +27,7 @@ public class FileAccess {
 
 		Integer vertexNumber = 1;
 
-		for (DefaultVertex v : graph.vertexSet()) {
+		for (GrapherVertex v : graph.vertexSet()) {
 			JSONObject vertexJson = new JSONObject();
 			vertexJson.put("x", (double) v.getCoordinate().getX());
 			vertexJson.put("y", (double) v.getCoordinate().getY());
@@ -37,7 +37,7 @@ public class FileAccess {
 			vertices.put(v.getLabel(), vertexJson);
 			vertexNumber += 1;
 		}
-		for (DefaultEdge<DefaultVertex> e : graph.edgeSet()) {
+		for (GrapherEdge<GrapherVertex> e : graph.edgeSet()) {
 			JSONObject edge = new JSONObject();
 			edge.put("source", e.getSource().getLabel());
 			edge.put("target", e.getTarget().getLabel());
@@ -46,25 +46,24 @@ public class FileAccess {
 		return json.toString();
 	}
 
-	public void load(
-			SimpleGraph<DefaultVertex, DefaultEdge<DefaultVertex>> graph,
+	public void load(GraphViewController controller,
 			String json) throws JSONException {
-
+		SimpleGraph<GrapherVertex, GrapherEdge<GrapherVertex>> graph = controller.getGraph();
 		JSONObject graphJson = new JSONObject(json);
-		HashSet<DefaultVertex> verticesSet = new HashSet<DefaultVertex>(
+		HashSet<GrapherVertex> verticesSet = new HashSet<GrapherVertex>(
 				graph.vertexSet());
-		HashSet<DefaultEdge<DefaultVertex>> edgesSet = new HashSet<DefaultEdge<DefaultVertex>>(
+		HashSet<GrapherEdge<GrapherVertex>> edgesSet = new HashSet<GrapherEdge<GrapherVertex>>(
 				graph.edgeSet());
 		graph.removeAllVertices(verticesSet);
 		graph.removeAllEdges(edgesSet);
 
 		JSONObject vertices = graphJson.getJSONObject("vertices");
-		HashMap<String, DefaultVertex> verticesMap = new HashMap<String, DefaultVertex>();
+		HashMap<String, GrapherVertex> verticesMap = new HashMap<String, GrapherVertex>();
 		for (@SuppressWarnings("rawtypes")
 		Iterator i = vertices.keys(); i.hasNext();) {
 			String key = (String) i.next();
 			JSONObject vertexJson = vertices.getJSONObject(key);
-			DefaultVertex vertex = new DefaultVertex(new Coordinate(
+			GrapherVertex vertex = controller.createVertex(new Coordinate(
 					vertexJson.getDouble("x"), vertexJson.getDouble("y")));
 			vertex.setLabel(key);
 			graph.addVertex(vertex);
